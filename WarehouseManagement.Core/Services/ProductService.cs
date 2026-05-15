@@ -12,10 +12,10 @@ public class ProductService : IProductService
         return wh?.Products ?? new List<Product>();
     }
 
-    public Product? GetByArticle(string article) =>
-        InMemoryStorage.Products.FirstOrDefault(p =>
-            p.Article.Equals(article, StringComparison.OrdinalIgnoreCase));
-
+  public Product? GetByArticle(string article) =>
+    InMemoryStorage.Products.FirstOrDefault(p =>
+        p.Article != null && 
+        p.Article.Equals(article, StringComparison.OrdinalIgnoreCase));
     public Product Add(Product product, int warehouseId)
     {
         ValidateProduct(product);
