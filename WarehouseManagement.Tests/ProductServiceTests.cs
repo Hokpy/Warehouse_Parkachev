@@ -166,8 +166,7 @@ public class ProductServiceTests : TestBase
 
         Assert.Empty(result);
         // Original should be unchanged
-        Assert.Equal("Существующий", _service.GetByArticle("DUP001")!.Name);
-    }
+Assert.Equal("Существующий", _service.GetByArticle("DUP001")!.Name);    }
 
     [Fact]
     public void ImportFromCsv_InvalidLines_SkippedGracefully()

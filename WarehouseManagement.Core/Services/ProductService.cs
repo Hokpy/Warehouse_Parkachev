@@ -58,16 +58,16 @@ public class ProductService : IProductService
     }
 
     public bool Delete(string article)
-    {
-        var product = GetByArticle(article);
-        if (product == null) return false;
+{
+    var product = GetByArticle(article);
+    if (product == null) return false;
 
-        foreach (var wh in InMemoryStorage.Warehouses)
-            wh.Products.Remove(product);
+    foreach (var wh in InMemoryStorage.Warehouses.ToList()) // ToList() = snapshot
+        wh.Products.Remove(product);
 
-        InMemoryStorage.Products.Remove(product);
-        return true;
-    }
+    InMemoryStorage.Products.Remove(product);
+    return true;
+}
 
     public List<Product> ImportFromCsv(string csv, int warehouseId)
     {

@@ -34,15 +34,15 @@ public class OrganizationService : IOrganizationService
         return true;
     }
 
-    public bool Delete(int id)
-    {
-        var org = GetById(id);
-        if (org == null) return false;
+   public bool Delete(int id)
+{
+    var org = GetById(id);
+    if (org == null) return false;
 
-        if (InMemoryStorage.Warehouses.Any(w => w.OrgId == id))
-            return false;
+    if (InMemoryStorage.Warehouses.Any(w => w.OrgId == id))
+        return false;
 
-        InMemoryStorage.Organizations.Remove(org);
-        return true;
-    }
+    InMemoryStorage.Organizations.Remove(org); // this is fine, not inside a loop
+    return true;
+}
 }

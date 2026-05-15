@@ -13,7 +13,6 @@ namespace WarehouseManagement.Tests;
 public abstract class TestBase : IDisposable
 {
     protected TestBase() => Reset();
-
     public void Dispose() => Reset();
 
     private static void Reset()
@@ -27,8 +26,6 @@ public abstract class TestBase : IDisposable
 
         Organization.ResetCounter();
         Warehouse.ResetCounter();
-        Category.ResetCounter();
-        Manufacturer.ResetCounter();
-        Supplier.ResetCounter();
+        // Product has no counter — Article is its identity, skip
     }
 }

@@ -49,13 +49,15 @@ public class OrganizationServiceTests : TestBase
     }
 
     [Fact]
-    public void Delete_ExistingWithoutWarehouses_ReturnsTrue()
-    {
-        var org = _service.Add("Org без складов");
-        var result = _service.Delete(org.OrgId);
-        Assert.True(result);
-        Assert.Empty(_service.GetAll());
-    }
+public void Delete_ExistingWithoutWarehouses_ReturnsTrue()
+{
+    var org = _service.Add("Org без складов");
+    var id = org.OrgId;
+    var result = _service.Delete(id);
+
+    Assert.True(result);
+    Assert.Null(_service.GetById(id)); // ← check THIS org is gone, not that all are empty
+}
 
     [Fact]
     public void Delete_NonExistent_ReturnsFalse()
