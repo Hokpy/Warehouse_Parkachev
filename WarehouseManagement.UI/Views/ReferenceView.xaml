@@ -1,0 +1,74 @@
+<UserControl x:Class="WarehouseManagement.UI.Views.ReferenceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Categories -->
+        <Border Grid.Column="0" Style="{StaticResource Card}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Категории" Style="{StaticResource SectionHeader}" />
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                    <TextBlock Text="Наименование" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding CategoryName, UpdateSourceTrigger=PropertyChanged}" />
+                    <UniformGrid Rows="1" Columns="2" Margin="0,6,0,0">
+                        <Button Content="Добавить" Command="{Binding AddCategoryCommand}"
+                                Style="{StaticResource SuccessButton}" Margin="0,0,2,0" />
+                        <Button Content="Изменить" Command="{Binding UpdateCategoryCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="2,0,0,0" />
+                    </UniformGrid>
+                    <Button Content="Удалить" Command="{Binding DeleteCategoryCommand}"
+                            Style="{StaticResource DangerButton}" Margin="0,4,0,0" />
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"
+                         DisplayMemberPath="Name" />
+            </DockPanel>
+        </Border>
+
+        <!-- Manufacturers -->
+        <Border Grid.Column="1" Style="{StaticResource Card}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Производители" Style="{StaticResource SectionHeader}" />
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                    <TextBlock Text="Наименование" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding ManufacturerName, UpdateSourceTrigger=PropertyChanged}" />
+                    <UniformGrid Rows="1" Columns="2" Margin="0,6,0,0">
+                        <Button Content="Добавить" Command="{Binding AddManufacturerCommand}"
+                                Style="{StaticResource SuccessButton}" Margin="0,0,2,0" />
+                        <Button Content="Изменить" Command="{Binding UpdateManufacturerCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="2,0,0,0" />
+                    </UniformGrid>
+                    <Button Content="Удалить" Command="{Binding DeleteManufacturerCommand}"
+                            Style="{StaticResource DangerButton}" Margin="0,4,0,0" />
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Manufacturers}" SelectedItem="{Binding SelectedManufacturer}"
+                         DisplayMemberPath="Name" />
+            </DockPanel>
+        </Border>
+
+        <!-- Suppliers -->
+        <Border Grid.Column="2" Style="{StaticResource Card}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Поставщики" Style="{StaticResource SectionHeader}" />
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                    <TextBlock Text="Наименование" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding SupplierName, UpdateSourceTrigger=PropertyChanged}" />
+                    <UniformGrid Rows="1" Columns="2" Margin="0,6,0,0">
+                        <Button Content="Добавить" Command="{Binding AddSupplierCommand}"
+                                Style="{StaticResource SuccessButton}" Margin="0,0,2,0" />
+                        <Button Content="Изменить" Command="{Binding UpdateSupplierCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="2,0,0,0" />
+                    </UniformGrid>
+                    <Button Content="Удалить" Command="{Binding DeleteSupplierCommand}"
+                            Style="{StaticResource DangerButton}" Margin="0,4,0,0" />
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Suppliers}" SelectedItem="{Binding SelectedSupplier}"
+                         DisplayMemberPath="Name" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>

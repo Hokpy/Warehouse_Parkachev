@@ -1,0 +1,46 @@
+<Window x:Class="WarehouseManagement.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:WarehouseManagement.UI.ViewModels"
+        xmlns:views="clr-namespace:WarehouseManagement.UI.Views"
+        Title="Складской учёт" Height="750" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource LightBrush}">
+
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:OrganizationViewModel}">
+            <views:OrganizationView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReferenceViewModel}">
+            <views:ReferenceView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Background="{StaticResource PrimaryBrush}" Grid.Column="0">
+            <StackPanel>
+                <TextBlock Text="Склад" FontSize="22" FontWeight="Bold"
+                           Foreground="White" Margin="20,24,20,32" />
+                <Button Content="🏢  Организации и склады"
+                        Command="{Binding ShowOrganizationsCommand}"
+                        Style="{StaticResource NavButton}" />
+                <Button Content="📋  Справочники"
+                        Command="{Binding ShowReferencesCommand}"
+                        Style="{StaticResource NavButton}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Content -->
+        <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="8" />
+    </Grid>
+</Window>

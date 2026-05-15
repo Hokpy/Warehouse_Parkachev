@@ -1,0 +1,199 @@
+<UserControl x:Class="WarehouseManagement.UI.Views.OrganizationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:WarehouseManagement.UI.ViewModels">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="220" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ==================== ORGANIZATIONS ==================== -->
+        <Border Grid.Column="0" Style="{StaticResource Card}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Организации" Style="{StaticResource SectionHeader}" />
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                    <TextBlock Text="Наименование" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding OrgName, UpdateSourceTrigger=PropertyChanged}" />
+                    <UniformGrid Rows="1" Columns="2" Margin="0,6,0,0">
+                        <Button Content="Добавить" Command="{Binding AddOrgCommand}"
+                                Style="{StaticResource SuccessButton}" Margin="0,0,2,0" />
+                        <Button Content="Изменить" Command="{Binding UpdateOrgCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="2,0,0,0" />
+                    </UniformGrid>
+                    <Button Content="Удалить" Command="{Binding DeleteOrgCommand}"
+                            Style="{StaticResource DangerButton}" Margin="0,4,0,0" />
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Organizations}"
+                         SelectedItem="{Binding SelectedOrganization}"
+                         DisplayMemberPath="OrgName"
+                         MouseDoubleClick="OrgList_MouseDoubleClick" />
+            </DockPanel>
+        </Border>
+
+        <!-- ==================== WAREHOUSES ==================== -->
+        <Border Grid.Column="1" Style="{StaticResource Card}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" Text="Склады" Style="{StaticResource SectionHeader}" />
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                    <TextBlock Text="Наименование" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding WhName, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="Адрес" Style="{StaticResource FieldLabel}" />
+                    <TextBox Text="{Binding WhAddress, UpdateSourceTrigger=PropertyChanged}" />
+                    <UniformGrid Rows="1" Columns="2" Margin="0,6,0,0">
+                        <Button Content="Добавить" Command="{Binding AddWhCommand}"
+                                Style="{StaticResource SuccessButton}" Margin="0,0,2,0" />
+                        <Button Content="Изменить" Command="{Binding UpdateWhCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="2,0,0,0" />
+                    </UniformGrid>
+                    <Button Content="Удалить" Command="{Binding DeleteWhCommand}"
+                            Style="{StaticResource DangerButton}" Margin="0,4,0,0" />
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Warehouses}"
+                         SelectedItem="{Binding SelectedWarehouse}"
+                         DisplayMemberPath="WhName"
+                         MouseDoubleClick="WhList_MouseDoubleClick" />
+            </DockPanel>
+        </Border>
+
+        <!-- ==================== PRODUCTS ==================== -->
+        <Border Grid.Column="2" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Header + toolbar -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,8">
+                    <TextBlock Text="Товары на складе" Style="{StaticResource SectionHeader}" />
+                    <WrapPanel>
+                        <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="180" ToolTip="Поиск по артикулу или наименованию" />
+                        <ComboBox ItemsSource="{Binding Categories}" DisplayMemberPath="Name"
+                                  SelectedValuePath="Id" SelectedValue="{Binding FilterCategoryId}"
+                                  Width="150" Margin="6,0,0,0" ToolTip="Фильтр по категории" />
+                        <Button Content="📥 Импорт CSV" Command="{Binding ImportCsvCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="6,0,0,0" />
+                    </WrapPanel>
+                </StackPanel>
+
+                <!-- Form + DataGrid side by side -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="290" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Product card form -->
+                    <Border Grid.Column="0" BorderBrush="{StaticResource AppBorderBrush}"
+                            BorderThickness="1" CornerRadius="4" Padding="10" Margin="0,0,6,0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="Карточка товара" Style="{StaticResource SectionHeader}" />
+
+                                <TextBlock Text="Артикул *" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding ProductArticle, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Наименование *" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Ед. изм. *" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding ProductUnit, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Цена (₽) *" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding ProductPrice, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Остаток" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding ProductStock, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Скидка (%)" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding ProductDiscount, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <TextBlock Text="Категория" Style="{StaticResource FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding Categories}" DisplayMemberPath="Name"
+                                          SelectedValuePath="Id" SelectedValue="{Binding SelectedCategoryId}" />
+
+                                <TextBlock Text="Производитель" Style="{StaticResource FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding Manufacturers}" DisplayMemberPath="Name"
+                                          SelectedValuePath="Id" SelectedValue="{Binding SelectedManufacturerId}" />
+
+                                <TextBlock Text="Поставщик" Style="{StaticResource FieldLabel}" />
+                                <ComboBox ItemsSource="{Binding Suppliers}" DisplayMemberPath="Name"
+                                          SelectedValuePath="Id" SelectedValue="{Binding SelectedSupplierId}" />
+
+                                <TextBlock Text="Описание" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding ProductDescription, UpdateSourceTrigger=PropertyChanged}"
+                                         AcceptsReturn="True" Height="56" TextWrapping="Wrap" />
+
+                                <TextBlock Text="Фото" Style="{StaticResource FieldLabel}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding ProductPhotoPath, UpdateSourceTrigger=PropertyChanged}"
+                                             IsReadOnly="True" />
+                                    <Button Grid.Column="1" Content="..." Width="32" Margin="4,0,0,0"
+                                            Command="{Binding BrowsePhotoCommand}"
+                                            Style="{StaticResource PrimaryButton}" Padding="4,6" />
+                                </Grid>
+
+                                <Image Source="{Binding ProductPhotoPath, Converter={StaticResource StringToImage}}"
+                                       MaxHeight="100" Margin="0,6,0,6" Stretch="Uniform"
+                                       Visibility="{Binding ProductPhotoPath, Converter={StaticResource NullToVisibility}}" />
+
+                                <UniformGrid Rows="1" Columns="2" Margin="0,8,0,0">
+                                    <Button Content="Добавить" Command="{Binding AddProductCommand}"
+                                            Style="{StaticResource SuccessButton}" Margin="0,0,2,0" />
+                                    <Button Content="Сохранить" Command="{Binding UpdateProductCommand}"
+                                            Style="{StaticResource PrimaryButton}" Margin="2,0,0,0" />
+                                </UniformGrid>
+                                <UniformGrid Rows="1" Columns="2" Margin="0,4,0,0">
+                                    <Button Content="Удалить" Command="{Binding DeleteProductCommand}"
+                                            Style="{StaticResource DangerButton}" Margin="0,0,2,0" />
+                                    <Button Content="Очистить" Command="{Binding ClearProductFormCommand}"
+                                            Style="{StaticResource BaseButton}"
+                                            Background="#95A5A6" Margin="2,0,0,0" />
+                                </UniformGrid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Products DataGrid -->
+                    <DataGrid Grid.Column="1"
+                              ItemsSource="{Binding Products}"
+                              SelectedItem="{Binding SelectedProduct}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Артикул" Binding="{Binding Article}" Width="90" />
+                            <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="Ед." Binding="{Binding Unit}" Width="50" />
+                            <DataGridTextColumn Header="Категория" Binding="{Binding Category.Name}" Width="110" />
+                            <DataGridTextColumn Header="Произв." Binding="{Binding Manufacturer.Name}" Width="100" />
+                            <DataGridTextColumn Header="Цена, ₽" Binding="{Binding Price, StringFormat=N2}" Width="80" />
+                            <DataGridTextColumn Header="Скидка %" Binding="{Binding DiscountPercent, StringFormat=N0}" Width="70" />
+                            <DataGridTemplateColumn Header="Цена со скидкой" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource DiscountPriceConverter}">
+                                                    <Binding Path="Price" />
+                                                    <Binding Path="DiscountPercent" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Остаток" Binding="{Binding StockQuantity}" Width="70" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
