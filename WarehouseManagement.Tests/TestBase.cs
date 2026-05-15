@@ -4,14 +4,20 @@ using WarehouseManagement.Core.DataStorage;
 namespace WarehouseManagement.Tests;
 
 /// <summary>
-/// Resets all InMemoryStorage collections AND static ID counters before each test.
-/// Without counter resets, tests that rely on specific IDs can fail depending on run order.
+/// Resets all InMemoryStorage collections AND static ID counters before AND after each test.
+/// 
+/// xUnit creates ONE instance of each test class and runs all test methods on it.
+/// The constructor runs once per class, not per test — so cleanup must also happen
+/// in Dispose() which xUnit calls after every individual test method.
 /// </summary>
 public abstract class TestBase : IDisposable
 {
-    protected TestBase()
+    protected TestBase() => Reset();
+
+    public void Dispose() => Reset();
+
+    private static void Reset()
     {
-        // Clear storage
         InMemoryStorage.Organizations.Clear();
         InMemoryStorage.Warehouses.Clear();
         InMemoryStorage.Products.Clear();
@@ -19,13 +25,10 @@ public abstract class TestBase : IDisposable
         InMemoryStorage.Manufacturers.Clear();
         InMemoryStorage.Suppliers.Clear();
 
-        // Reset static counters — critical for predictable IDs across tests
         Organization.ResetCounter();
         Warehouse.ResetCounter();
         Category.ResetCounter();
         Manufacturer.ResetCounter();
         Supplier.ResetCounter();
     }
-
-    public void Dispose() { }
 }

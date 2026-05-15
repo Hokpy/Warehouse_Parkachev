@@ -43,7 +43,9 @@ public class OrganizationServiceTests : TestBase
         var result = _service.Delete(org.OrgId);
 
         Assert.False(result);
-        Assert.Single(_service.GetAll());
+        // Assert the org is still there — not Assert.Single, since other tests
+        // may have added orgs if xUnit reuses the class instance
+        Assert.Contains(_service.GetAll(), o => o.OrgId == org.OrgId);
     }
 
     [Fact]
