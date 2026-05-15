@@ -20,11 +20,13 @@ public class ProductService : IProductService
     {
         ValidateProduct(product);
 
-        if (GetByArticle(product.Article) != null)
-            throw new InvalidOperationException($"Товар с артикулом '{product.Article}' уже существует.");
-
+        // Find warehouse first — if it doesn't exist, ArgumentException is the right error
         var wh = InMemoryStorage.Warehouses.FirstOrDefault(w => w.WhId == warehouseId)
             ?? throw new ArgumentException("Склад не найден.");
+
+        // Only then check for duplicate article
+        if (GetByArticle(product.Article) != null)
+            throw new InvalidOperationException($"Товар с артикулом '{product.Article}' уже существует.");
 
         ResolveNavigationProperties(product);
 
